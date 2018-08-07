@@ -6,7 +6,7 @@ To solve this problem, the solution is often to processed to some variable renam
 
 
 1. You rename manually your first model its. 
-For example, ```python with tf.variable_scope('generator'):``` could become ```python with tf.variable_scope('generator_Model1'):```
+For example, ```with tf.variable_scope('generator'):``` could become ```with tf.variable_scope('generator_Model1'):```
 2. You rename the variable contained in the checkpoint of your first model, using the script ```tf_rename.py``` of this project.  don't forget to update the code according your need. In the previous example, we get:
 
 ```python
