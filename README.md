@@ -9,7 +9,7 @@ To solve this problem, the solution is often to processed to some variable renam
 For example, ```with tf.variable_scope('generator'):``` could become ```with tf.variable_scope('generator_Model1'):```
 2. You rename the variable contained in the checkpoint of your first model, using the script ```tf_rename.py``` of this project.  don't forget to update the code according your need. In the previous example, we get:
 
-```python
+```
     checkpoint_dir = 'checkpoint_dir'
     replace_substr1 = 'generator'
     replace_substr2 = 'generator_Model1'
@@ -17,4 +17,19 @@ For example, ```with tf.variable_scope('generator'):``` could become ```with tf.
 ```
 This script will update each variable accordingly.
 
-3. You can restore the weights of the first model from the code of your second model.
+3. You can restore the weights of the first model from the code of your second model. For example.
+
+```
+var_list = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='generator_Model1')
+weight_initiallizer = tf.train.Saver(var_list)
+
+# Define the initialization operation
+init_op = tf.global_variables_initializer()
+
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+with tf.Session(config=config) as sess:
+	# Load the pretrained model
+	print('Loading weights from the pre-trained model')
+	weight_initiallizer.restore(sess, FLAGS.checkpoint)
+```
